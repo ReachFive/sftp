@@ -64,7 +64,7 @@ if [ -n "$gid" ]; then
 
     useraddOptions+=(--gid "$gid")
 fi
-
+useraddOptions+=(--shell /sbin/nologin)
 useradd "${useraddOptions[@]}" "$user"
 mkdir -p "/home/$user"
 chown root:root "/home/$user"
@@ -96,6 +96,11 @@ if [ -d "$userKeysQueuedDir" ]; then
     chown "$uid" "$userKeysAllowedFile"
     chmod 600 "$userKeysAllowedFile"
 fi
+
+if [ ! -d /home/$user/dev ];then
+  mkdir /home/$user/dev
+fi
+echo "\$AddUnixListenSocket /home/$user/dev/log" >> /etc/rsyslog.d/$user.conf
 
 # Make sure dirs exists
 if [ -n "$dir" ]; then
