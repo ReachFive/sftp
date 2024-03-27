@@ -1,0 +1,14 @@
+steps:
+- id: "Build image"
+  name: 'gcr.io/cloud-builders/docker'
+  entrypoint: sh
+  args:
+    - '-c'
+    - |
+      export DOCKER_BUILDKIT=1 && \
+      docker build -f /workspace/Dockerfile-alpine -t europe-docker.pkg.dev/infra-281813/reachfive/sftp:$TAG_NAME .
+      docker push europe-docker.pkg.dev/infra-281813/reachfive/sftp:$TAG_NAME
+timeout: 6000s
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  machineType: 'E2_HIGHCPU_32'
